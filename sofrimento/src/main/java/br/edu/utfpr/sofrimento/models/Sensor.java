@@ -13,13 +13,15 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "tb_property")
-public class Property extends BaseEntity{
-
-    @Column(name = "name", length = 200, nullable = false)
-    private String name;
-
+@Table(name = "tb_sensor")
+public class Sensor extends BaseEntity {
+    
+    @Column(name = "physical_id", nullable = false)
+    private String physicalID;
+    @Column(name = "sensor_type", nullable = false)
+    private SensorType sensorType;
+    
     @ManyToOne
     @JoinColumn(nullable = false)
-    private Person person;
+    private Device device;
 }

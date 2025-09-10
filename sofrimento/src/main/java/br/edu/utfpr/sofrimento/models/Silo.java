@@ -2,6 +2,8 @@ package br.edu.utfpr.sofrimento.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,4 +17,8 @@ import lombok.ToString;
 public class Silo extends BaseEntity{
     @Column(name = "physical_id", nullable=false)
     private Integer physicalId;
+
+    @ManyToOne
+    @JoinColumn(nullable=false)
+    private Property property;
 }
