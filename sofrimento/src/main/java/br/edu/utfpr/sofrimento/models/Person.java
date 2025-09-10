@@ -17,5 +17,4 @@ public class Person extends BaseEntity {
     @Column(name = "name", length = 200, nullable = false)
     private String name;
     
-
 }
