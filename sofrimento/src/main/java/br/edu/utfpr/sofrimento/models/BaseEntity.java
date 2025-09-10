@@ -18,12 +18,12 @@ import lombok.ToString;
 public abstract class BaseEntity {
 
     @Id
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "Id", updatable = false, nullable = false)
     private UUID id = UUID.randomUUID();
 
-    @Column(name = "createdAt", updatable = false, nullable = false)
+    @Column(name = "CreatedAt", updatable = false, nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column(name = "updatedAt", nullable = false)
+    @Column(name = "UpdatedAt", nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
 }
