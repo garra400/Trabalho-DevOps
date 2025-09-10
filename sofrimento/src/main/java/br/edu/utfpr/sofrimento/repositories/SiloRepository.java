@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.edu.utfpr.sofrimento.models.Person;
+import br.edu.utfpr.sofrimento.models.Silo;
 
-public interface PersonRepository extends JpaRepository<Person, UUID>{
-
+public interface SiloRepository extends JpaRepository<Silo, UUID> {
+    // Obter?
 }
