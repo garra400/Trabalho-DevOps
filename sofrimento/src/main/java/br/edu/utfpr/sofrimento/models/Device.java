@@ -15,10 +15,10 @@ import lombok.ToString;
 
 public class Device extends BaseEntity {
 
-    @Column(name = "Mac", updatable = false, length = 200, nullable = false)
+    @Column(name = "mac", updatable = false, length = 200, nullable = false)
     private String mac;
 
-    @Column(name = "Ip", length = 200, nullable = false)
+    @Column(name = "ip", length = 200, nullable = false)
     private String ip;
 
 }
