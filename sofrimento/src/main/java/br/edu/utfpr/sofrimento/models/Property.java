@@ -11,11 +11,10 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "tb_person")
-public class Person extends BaseEntity {
+@Table(name = "tb_property")
+public class Property extends BaseEntity{
 
     @Column(name = "name", length = 200, nullable = false)
     private String name;
-    
 
 }
