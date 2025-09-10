@@ -1,5 +1,8 @@
 # Getting Started
 
+## How to Run
+run `mvn spring-boot:run` on ./sofrimento/
+
 ### Reference Documentation
 For further reference, please consider the following sections:
 

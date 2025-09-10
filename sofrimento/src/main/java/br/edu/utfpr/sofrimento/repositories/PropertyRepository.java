@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.edu.utfpr.sofrimento.models.Person;
+import br.edu.utfpr.sofrimento.models.Property;
 
-public interface PersonRepository extends JpaRepository<Person, UUID>{
+public interface PropertyRepository extends JpaRepository<Property, UUID>{
 
 }
