@@ -8,10 +8,10 @@ import org.springframework.data.domain.PageRequest;
 
 import br.edu.utfpr.sofrimento.dtos.DeviceDTO;
 import br.edu.utfpr.sofrimento.exception.NotFoundException;
-import br.edu.utfpr.sofrimento.models.Silo;
 import br.edu.utfpr.sofrimento.models.Device;
-import br.edu.utfpr.sofrimento.repositories.SiloRepository;
+import br.edu.utfpr.sofrimento.models.Silo;
 import br.edu.utfpr.sofrimento.repositories.DeviceRepository;
+import br.edu.utfpr.sofrimento.repositories.SiloRepository;
 
 
 public class DeviceService {
@@ -39,7 +39,7 @@ public class DeviceService {
     //READ BY SILO
     public Page<DeviceDTO> listBySilo(String siloId, int page, int size) {
         return deviceRepo.findBySiloId(UUID.fromString(siloId), PageRequest.of(page, size))
-                .map(l -> new DeviceDTO(l.getId(), l.getName()));
+                .map(l -> new DeviceDTO(l.getId(), l.getMac(), l.getIp()));
     }
 
     /**
