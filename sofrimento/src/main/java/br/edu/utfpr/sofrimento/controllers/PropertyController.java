@@ -26,7 +26,7 @@ public class PropertyController {
     }
 
     //CREATE
-    @PostMapping(value = {"", "/"})
+    @PostMapping(value = {"/{personId}", "/{personId}/"})
     public PropertyDTO create(@PathVariable String personId, @RequestBody PropertyDTO dto) {
         return service.save(personId, dto);
     }
@@ -61,8 +61,8 @@ public class PropertyController {
 
     // DELETE
     @DeleteMapping(value = {"/{propertyId}","/{propertyId}/"})
-    public void delete(@PathVariable String id) {
-        service.delete(id);
+    public void delete(@PathVariable String propertyId) {
+        service.delete(propertyId);
     }
 
     /**
@@ -76,7 +76,7 @@ public class PropertyController {
      * @return
      */
     @PutMapping(value = {"/{propertyId}","/{propertyId}/"})
-    public Property update(@PathVariable String id, @RequestBody PropertyDTO dto) {
-        return service.update(id, dto);
+    public Property update(@PathVariable String propertyId, @RequestBody PropertyDTO dto) {
+        return service.update(propertyId, dto);
     }
 }
