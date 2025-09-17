@@ -1,6 +1,7 @@
 package br.edu.utfpr.sofrimento.services;
 
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import br.edu.utfpr.sofrimento.repositories.PropertyRepository;
 public class PropertyService {
     private final PropertyRepository propertyRepo;
     private final PersonRepository personRepo;
+    Logger logger = Logger.getLogger(PropertyRepository.class.getName());
 
     public PropertyService(PropertyRepository propertyRepo, PersonRepository personRepo) {
         this.propertyRepo = propertyRepo;
@@ -31,6 +33,8 @@ public class PropertyService {
         BeanUtils.copyProperties(propertyDTO, property, "id"); // Copia as propriedades do DTO para o property
         property.setPerson(person); // Associando a person ao novo property
         
+        logger.info("Criando property: " + property);
+
         Property saved = propertyRepo.save(property);
         return new PropertyDTO(saved.getId(), saved.getName());
     }
@@ -69,7 +73,9 @@ public class PropertyService {
      * @param id
      */
     public void delete(String id) {
-        //logger.info("Deletando property com ID: " + id);
+    
+        logger.info("Deletando property com ID: " + id);
+
         propertyRepo.delete(findById(id));
     }
 
@@ -85,7 +91,7 @@ public class PropertyService {
         var existingProperty = findById(id);
         BeanUtils.copyProperties(propertyDTO, existingProperty, "id");
 
-        //logger.info("Atualizando person: " + existingPerson);
+        logger.info("Atualizando property: " + existingProperty);
 
         return propertyRepo.save(existingProperty);
     }
