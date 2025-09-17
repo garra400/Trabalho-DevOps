@@ -1,6 +1,7 @@
 package br.edu.utfpr.sofrimento.services;
 
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import br.edu.utfpr.sofrimento.repositories.SiloRepository;
 public class DeviceService {
     private final DeviceRepository deviceRepo;
     private final SiloRepository siloRepo;
+    Logger logger = Logger.getLogger(DeviceRepository.class.getName());
 
     public DeviceService(DeviceRepository deviceRepo, SiloRepository siloRepo) {
         this.deviceRepo = deviceRepo;
@@ -31,6 +33,8 @@ public class DeviceService {
         Device device = new Device(); // Cria um device vazio
         BeanUtils.copyProperties(deviceDTO, device, "id"); // Copia as propriedades do DTO para o device
         device.setSilo(silo); // Associando o silo ao novo device
+
+        logger.info("Criando device: " + device);
 
         Device saved = deviceRepo.save(device);
         return new DeviceDTO(saved.getId(), saved.getMac(), saved.getIp());
@@ -70,7 +74,8 @@ public class DeviceService {
      * @param id
      */
     public void delete(String id) {
-        //logger.info("Deletando device com ID: " + id);
+        logger.info("Deletando device com ID: " + id);
+        
         deviceRepo.delete(findById(id));
     }
 
@@ -86,7 +91,7 @@ public class DeviceService {
         var existingDevice = findById(id);
         BeanUtils.copyProperties(deviceDTO, existingDevice, "id");
 
-        //logger.info("Atualizando device: " + existingDevice);
+        logger.info("Atualizando device: " + existingDevice);
 
         return deviceRepo.save(existingDevice);
     }
