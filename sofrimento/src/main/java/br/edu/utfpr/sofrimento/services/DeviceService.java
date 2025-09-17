@@ -11,7 +11,7 @@ import br.edu.utfpr.sofrimento.repositories.DeviceRepository;
 import br.edu.utfpr.sofrimento.repositories.SiloRepository;
 
 @Service
-public class DeviceServices {
+public class DeviceService {
     @Autowired
     private DeviceRepository deviceRepository;
 
