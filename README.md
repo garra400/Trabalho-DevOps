@@ -29,17 +29,24 @@ Projeto destinado à definição da arquitetura, organização de pastas, mapeam
 ## 📦 Estrutura do Projeto (Proposta Inicial)
 
 ```
-project-name/
-├── docs/                  # Documentação do projeto
-├── src/                   # Código-fonte principal
-│   ├── modules/           # Módulos/funções separados
-│   ├── services/          # Integrações e APIs
-│   ├── utils/             # Funções auxiliares
-│   └── assets/            # Arquivos estáticos (imagens, ícones)
-├── tests/                 # Testes automatizados
-├── .gitignore             # Arquivos a serem ignorados pelo Git
-├── README.md              # Documentação principal
-└── LICENSE                # Licença do projeto
+Trabalho-DevOps/
+├── sofrimento/
+│   ├── mvn/                  
+│   ├── wrapper
+│   ├── src/                  
+│   │   ├── main/           
+│   │   │   ├── java/br/edu/utfpr/sofrimento
+│   │   │   │   ├── controllers/
+│   │   │   │   ├── models/
+│   │   │   │   ├── dtos/
+│   │   │   │   ├── exception/
+│   │   │   │   ├── repositories/
+│   │   │   │   ├── services/
+│   │   │   ├── resources
+│   │   └── test/java/br/edu/utfpr/sofrimento 
+│   ├── .gitignore            
+├── README.md              
+└── LICENSE               
 ```
 
 ---
