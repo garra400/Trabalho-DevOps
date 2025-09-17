@@ -33,7 +33,7 @@ public class SiloService {
         BeanUtils.copyProperties(siloDTO, silo, "id"); // Copia as propriedades do DTO para o silo
         silo.setProperty(property); // Associando a property ao novo silo
 
-        logger.info("Criando silo: " + property);
+        logger.info("Criando silo: " + silo);
         
         Silo saved = siloRepo.save(silo);
         return new SiloDTO(saved.getId(), saved.getPhysicalId());
