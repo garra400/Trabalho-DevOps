@@ -1,6 +1,7 @@
 package br.edu.utfpr.sofrimento.services;
 
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import br.edu.utfpr.sofrimento.repositories.SiloRepository;
 public class SiloService {
     private final SiloRepository siloRepo;
     private final PropertyRepository propertyRepo;
+    Logger logger = Logger.getLogger(SiloRepository.class.getName());
 
     public SiloService(SiloRepository siloRepo, PropertyRepository propertyRepo) {
         this.siloRepo = siloRepo;
@@ -25,11 +27,13 @@ public class SiloService {
     //CREATE
     public SiloDTO save(String propertyId, SiloDTO siloDTO) {
         Property property = propertyRepo.findById(UUID.fromString(propertyId))
-                .orElseThrow(() -> new NotFoundException("Property " + propertyId + " não encontrada."));
+                .orElseThrow(() -> new NotFoundException("Silo " + propertyId + " não encontrada."));
 
         Silo silo = new Silo(); // Cria um silo vazio
         BeanUtils.copyProperties(siloDTO, silo, "id"); // Copia as propriedades do DTO para o silo
         silo.setProperty(property); // Associando a property ao novo silo
+
+        logger.info("Criando silo: " + property);
         
         Silo saved = siloRepo.save(silo);
         return new SiloDTO(saved.getId(), saved.getPhysicalId());
@@ -69,6 +73,9 @@ public class SiloService {
      * @param id
      */
     public void delete(String id) {
+
+        logger.info("Deletando silo com ID: " + id);
+
         siloRepo.delete(findById(id));
     }
 
@@ -83,6 +90,9 @@ public class SiloService {
     public Silo update(String id, SiloDTO siloDTO) {
         var existingSilo = findById(id);
         BeanUtils.copyProperties(siloDTO, existingSilo, "id");
+
+        logger.info("Atualizando silo: " + existingSilo);
+
         return siloRepo.save(existingSilo);
     }
 }
