@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 import br.edu.utfpr.sofrimento.dtos.SiloDTO;
 import br.edu.utfpr.sofrimento.exception.NotFoundException;
@@ -14,6 +15,7 @@ import br.edu.utfpr.sofrimento.models.Silo;
 import br.edu.utfpr.sofrimento.repositories.PropertyRepository;
 import br.edu.utfpr.sofrimento.repositories.SiloRepository;
 
+@Service
 public class SiloService {
     private final SiloRepository siloRepo;
     private final PropertyRepository propertyRepo;

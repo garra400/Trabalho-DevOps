@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
 
 import br.edu.utfpr.sofrimento.dtos.SensorDTO;
 import br.edu.utfpr.sofrimento.exception.NotFoundException;
@@ -14,6 +15,7 @@ import br.edu.utfpr.sofrimento.models.Sensor;
 import br.edu.utfpr.sofrimento.repositories.DeviceRepository;
 import br.edu.utfpr.sofrimento.repositories.SensorRepository;
 
+@Service
 public class SensorService {
     private final SensorRepository sensorRepo;
     private final DeviceRepository deviceRepo;
