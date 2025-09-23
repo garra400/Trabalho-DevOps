@@ -2,6 +2,9 @@ package br.edu.utfpr.sofrimento.dtos;
 
 import java.util.UUID;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public record SiloDTO(UUID id, 
         @NotBlank
         @Size(min = 2, max = 255)
