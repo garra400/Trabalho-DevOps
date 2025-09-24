@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 
 public record SiloDTO(UUID id, 
         @NotBlank
-        @Size(min = 2, max = 255)
+        @Size(min = 1, max = 255)
         Integer physicalId) { // Tem que ter os mesmos nomes dos atributos
 
 }
