@@ -34,4 +34,6 @@ build/
 
 ## Project ##
 !**/src/main/resources/application.properties
-**/src/test/**
+**/src/test/java/br/edu/utfpr/sofrimento/restclient/**
+**/src/test/java/br/edu/utfpr/sofrimento/restclient/auth.http
+**/src/test/java/br/edu/utfpr/sofrimento/restclient/resources.http
