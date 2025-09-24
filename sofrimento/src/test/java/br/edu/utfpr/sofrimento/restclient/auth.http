@@ -1,0 +1,24 @@
+@URL=http://localhost:8080/auth
+
+@token=eyJraWQiOiJ4U3BMZ2tcLzRWc0tHRTVjeVB5R0JENEtsWDlvNjZ5SENWNmJDWjBDZ1hCMD0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIzMWZiNjU4MC1kMDgxLTcwYTUtMTA4MC0wYjY0ODEwMTQ0YWEiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0yLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMl80Z3NFVVNaa2siLCJjbGllbnRfaWQiOiIxbTdqbWJldmNjMHRhbmxtOHFsZmdmYzgzZCIsIm9yaWdpbl9qdGkiOiJlZTM3MjdlMC02Yzc1LTRhMTAtYjU0Yi02M2JhZjdlN2FmZDYiLCJldmVudF9pZCI6IjRkOWY3OWU1LWE1OTktNDMzOC1iYmQyLWI0NjIwNmEwYzg0MSIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE3NTg3MzIwOTcsImV4cCI6MTc1ODczNTY5NywiaWF0IjoxNzU4NzMyMDk3LCJqdGkiOiI0MTllYTQ3Ni03ZWMyLTQ1ZTktOWQ0Ny1iZTM4Yzk1MDM0Y2IiLCJ1c2VybmFtZSI6IjMxZmI2NTgwLWQwODEtNzBhNS0xMDgwLTBiNjQ4MTAxNDRhYSJ9.a9l34-1zOCMLCEPx9U7HSz1vJtJXGlhB50eJzPjKTWId8tL6eZ7b7zHy4b6kR23zPawGxYuzQHV27xlPHm0Nf7LtWWISwCVs19bi0gfhvp2Yx2i6UR2_3V631U0_YK3UKeQ9Uz2_ckEamUAqnNg2LPi5gtDdIQBCCVC96A77JVmf95JkN5hEBicXd-dEyUPOgaAmIZRPejOKVVeBd3Wfl_c9-8WaSm667Eb5x8j_gMbVCtgFPOUFOwKTvOLJ3ER4UVOaIUf0X_pnw1vHfr7FMqG0Kpp31LGLVDhYte6WXXy1O5la5tJvukwYP78IaF1KUtCNGK1GyGw5nejZB2rHCA
+### Validate
+POST {{URL}}/validate HTTP/1.1
+Authorization: Bearer {{token}}
+
+
+### Auth with secret
+POST {{URL}}/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "usuarioteste",
+    "password": "senhateste"
+}
+
+### Refresh token
+POST {{URL}}auth/refresh HTTP/1.1
+Content-Type: application/json
+
+{
+    "refreshToken": "xxx"
+}
