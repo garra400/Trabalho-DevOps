@@ -1,68 +1,144 @@
-# 🛠️ Estruturação Inicial do Software
+# 🌾 Sistema de Monitoramento de Silos Agrícolas
 
-Projeto destinado à definição da arquitetura, organização de pastas, mapeamento de processos e padronização de modificações, seguindo a metodologia **Kanban** para gestão de tarefas e **Git Flow** para controle de versão.
+Sistema desenvolvido para monitoramento e controle de silos agrícolas, permitindo o gerenciamento de propriedades, dispositivos, sensores e dados de armazenamento. O projeto utiliza Spring Boot e segue a metodologia **Kanban** para gestão de tarefas e **Git Flow** para controle de versão.
 
 ---
 
 ## ✨ Status do Projeto
 
-**📋 EM PLANEJAMENTO** – Estrutura inicial e processos sendo definidos.
+**� EM DESENVOLVIMENTO** – Sistema em desenvolvimento ativo com funcionalidades principais implementadas.
 
-* ✅ **Metodologia Kanban** configurada para acompanhamento visual de tarefas
+* ✅ **API REST** com Spring Boot implementada
+* ✅ **Autenticação** com AWS Cognito integrada
+* ✅ **Documentação Swagger** configurada
+* ✅ **Estrutura MVC** organizada e funcional
+* ✅ **Metodologia Kanban** configurada para acompanhamento de tarefas
 * ✅ **Fluxo Git Flow** definido para controle de branches e versões
-* ⏳ **Mapeamento de processos** em andamento
-* ⏳ **Arquitetura de pastas** em definição
-* ⏳ **Padronização de commits e código** pendente de aprovação
+* ⏳ **Testes unitários** em desenvolvimento
+* ⏳ **Deploy** em configuração
 
 ---
 
-## 🚀 Objetivos
+## 🚀 Funcionalidades
 
-* Garantir que a estrutura do software seja clara e organizada
-* Facilitar a colaboração entre desenvolvedores
-* Definir padrões para modificações e criação de novas funcionalidades
-* Mapear processos e documentar requisitos
-* Manter um fluxo de desenvolvimento contínuo e rastreável
+* **Gestão de Propriedades**: Cadastro e gerenciamento de propriedades agrícolas
+* **Controle de Silos**: Monitoramento de silos e suas capacidades
+* **Gerenciamento de Dispositivos**: Controle de dispositivos IoT conectados
+* **Monitoramento de Sensores**: Acompanhamento em tempo real de sensores de temperatura, umidade, etc.
+* **Gestão de Usuários**: Sistema de autenticação e autorização com AWS Cognito
+* **API RESTful**: Endpoints completos para todas as funcionalidades
+* **Documentação Swagger**: Interface interativa para testes e documentação da API
 
 ---
 
-## 📦 Estrutura do Projeto (Proposta Inicial)
+## 🏗️ Tecnologias Utilizadas
+
+* **Java 17** - Linguagem de programação
+* **Spring Boot 3.x** - Framework principal
+* **Spring Security** - Segurança e autenticação
+* **Spring Data JPA** - Persistência de dados
+* **AWS Cognito** - Autenticação e autorização
+* **Swagger/OpenAPI** - Documentação da API
+* **Maven** - Gerenciamento de dependências
+* **H2/PostgreSQL** - Banco de dados
+
+---
+
+## 📦 Estrutura do Projeto
 
 ```
 Trabalho-DevOps/
-├── sofrimento/
-│   ├── mvn/                  
-│   ├── wrapper
-│   ├── src/                  
-│   │   ├── main/           
-│   │   │   ├── java/br/edu/utfpr/sofrimento
-│   │   │   │   ├── controllers/
-│   │   │   │   ├── models/
-│   │   │   │   ├── dtos/
-│   │   │   │   ├── exception/
-│   │   │   │   ├── repositories/
-│   │   │   │   ├── services/
-│   │   │   ├── resources
-│   │   └── test/java/br/edu/utfpr/sofrimento 
-│   ├── .gitignore            
-├── README.md              
-└── LICENSE               
+├── sofrimento/                           # Aplicação Spring Boot
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/br/edu/utfpr/sofrimento/
+│   │   │   │   ├── SofrimentoApplication.java
+│   │   │   │   ├── config/
+│   │   │   │   │   └── SwaggerConfig.java
+│   │   │   │   ├── controllers/          # Controllers REST
+│   │   │   │   │   ├── AuthController.java
+│   │   │   │   │   ├── DeviceController.java
+│   │   │   │   │   ├── PersonController.java
+│   │   │   │   │   ├── PropertyController.java
+│   │   │   │   │   ├── SensorController.java
+│   │   │   │   │   ├── SiloController.java
+│   │   │   │   │   └── UserController.java
+│   │   │   │   ├── dtos/                 # Data Transfer Objects
+│   │   │   │   ├── exception/            # Tratamento de exceções
+│   │   │   │   ├── models/               # Entidades JPA
+│   │   │   │   ├── repositories/         # Repositórios JPA
+│   │   │   │   ├── security/             # Configurações de segurança
+│   │   │   │   └── services/             # Lógica de negócio
+│   │   │   └── resources/
+│   │   │       └── application.properties
+│   │   └── test/                         # Testes unitários
+│   ├── mvnw / mvnw.cmd                  # Maven Wrapper
+│   └── pom.xml                          # Configuração Maven
+├── README.md
+├── HELP.md
+├── SWAGGER_AUTH_DOCUMENTATION.md
+└── shell.nix
 ```
 
 ---
 
-## 📋 Mapeamento de Processos
+## 🚀 Como Executar
 
-O mapeamento inclui:
+### Pré-requisitos
+- Java 17 ou superior
+- Maven 3.6 ou superior
 
-1. **Levantamento de Funcionalidades Necessárias**
-2. **Definição de Fluxos Internos**
-3. **Criação de Backlog Inicial**
-4. **Divisão de Etapas no Kanban**
+### Executando a aplicação
+
+1. **Clone o repositório**:
+   ```bash
+   git clone https://github.com/garra400/Trabalho-DevOps.git
+   cd Trabalho-DevOps/sofrimento
+   ```
+
+2. **Execute a aplicação**:
+   ```bash
+   ./mvnw spring-boot:run
+   ```
+   
+   Ou no Windows:
+   ```cmd
+   mvnw.cmd spring-boot:run
+   ```
+
+3. **Acesse a aplicação**:
+   - API: `http://localhost:8080`
+   - Swagger UI: `http://localhost:8080/swagger-ui.html`
 
 ---
 
-## 📌 Workflow Utilizado
+## 📋 Endpoints da API
+
+### Autenticação
+- `POST /auth/login` - Login de usuário
+
+### Gestão de Propriedades
+- `GET /properties` - Listar propriedades
+- `POST /properties` - Criar propriedade
+- `GET /properties/{id}` - Buscar propriedade por ID
+- `PUT /properties/{id}` - Atualizar propriedade
+- `DELETE /properties/{id}` - Deletar propriedade
+
+### Gestão de Silos
+- `GET /silos` - Listar silos
+- `POST /silos` - Criar silo
+- `GET /silos/{id}` - Buscar silo por ID
+- `PUT /silos/{id}` - Atualizar silo
+- `DELETE /silos/{id}` - Deletar silo
+
+### Gestão de Dispositivos e Sensores
+- Endpoints similares para `devices`, `sensors` e `users`
+
+Para documentação completa, acesse `/swagger-ui.html` após executar a aplicação.
+
+---
+
+## 📌 Workflow de Desenvolvimento
 
 ### Kanban
 
@@ -72,46 +148,103 @@ O mapeamento inclui:
 
 ### Git Flow
 
-* Branches principais:
-
+* **Branches principais:**
   * `main`: versão estável e de produção
-  * `develop`: versão em desenvolvimento
-* Branches auxiliares:
-
+  * `dev`: versão em desenvolvimento
+  
+* **Branches auxiliares:**
   * `feature/*`: novas funcionalidades
   * `release/*`: preparação de releases
   * `hotfix/*`: correções urgentes em produção
 
 ---
 
-## ✅ Critérios de Aceitação
+## 🤝 Como Contribuir
 
-* Estrutura de pastas documentada e aprovada
-* Fluxo Kanban e Git Flow integrados no repositório
-* Funcionalidades mapeadas e priorizadas
-* Guia de contribuição definido (commits, PRs e revisão de código)
+Este projeto utiliza o **sistema de forks** para contribuições. Siga estes passos:
 
----
+### 1. Preparação inicial
 
-## 📝 Contribuição
-
-1. **Crie uma branch** a partir de `develop`:
-
+1. **Faça um fork** do repositório para sua conta GitHub
+2. **Clone seu fork** localmente:
    ```bash
-   git checkout develop
-   git pull origin develop
+   git clone https://github.com/SEU_USUARIO/Trabalho-DevOps.git
+   cd Trabalho-DevOps
+   ```
+
+3. **Configure o repositório original** como upstream:
+   ```bash
+   git remote add upstream https://github.com/garra400/Trabalho-DevOps.git
+   ```
+
+### 2. Desenvolvendo uma feature
+
+1. **Sincronize com o repositório original**:
+   ```bash
+   git checkout dev
+   git pull upstream dev
+   git push origin dev
+   ```
+
+2. **Crie uma branch** a partir de `dev`:
+   ```bash
    git checkout -b feature/nome-da-feature
    ```
-2. **Implemente sua alteração**
-3. **Faça commit seguindo o padrão**:
 
+3. **Implemente sua alteração** seguindo os padrões do projeto
+
+4. **Faça commits seguindo o padrão**:
+   ```bash
+   git commit -m "feat: descrição breve da funcionalidade"
+   git commit -m "fix: descrição breve da correção"
+   git commit -m "docs: atualização de documentação"
    ```
-   feat: descrição breve da funcionalidade
-   fix: descrição breve da correção
-   docs: atualização de documentação
+
+5. **Envie para seu fork**:
+   ```bash
+   git push origin feature/nome-da-feature
    ```
-4. **Abra um Pull Request** para `develop`
+
+### 3. Solicitando integração
+
+1. **Abra um Pull Request** do seu fork para a branch `dev` do repositório original
+2. **Descreva claramente** as mudanças implementadas
+3. **Aguarde a revisão** da equipe de desenvolvimento
+4. **Faça ajustes** se solicitado pelos revisores
+
+### 4. Fluxo de integração
+
+* **Pull Requests** são revisados e aprovados na branch `dev`
+* **Periodicamente**, mudanças aprovadas em `dev` são promovidas para `main` (produção)
+* **Releases** são criadas a partir da branch `main`
 
 ---
 
-Se quiser, posso também preparar **uma versão Kanban-friendly para GitHub** com *checklists* e tarefas já organizadas para aparecer no quadro automaticamente, para que você só copie e cole no *issue* principal. Isso já deixaria pronto para você começar a trabalhar no fluxo. Quer que eu faça essa versão também?
+## 📝 Padrões de Contribuição
+
+### Mensagens de Commit
+- `feat:` nova funcionalidade
+- `fix:` correção de bug
+- `docs:` mudanças na documentação
+- `style:` formatação, ponto e vírgula, etc (sem mudança de código)
+- `refactor:` refatoração de código
+- `test:` adição ou modificação de testes
+- `chore:` mudanças em ferramentas, configurações, etc
+
+### Código
+- Siga as convenções do Java e Spring Boot
+- Mantenha os testes atualizados
+- Documente métodos públicos com Javadoc
+- Use nomes descritivos para variáveis e métodos
+
+---
+
+## 👥 Equipe de Desenvolvimento
+
+Agradecemos a todos os contribuidores que ajudam a tornar este projeto melhor!
+
+---
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
