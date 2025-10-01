@@ -33,9 +33,17 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.edu.utfpr.sofrimento.dtos.AuthRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Autenticação", description = "Endpoints para autenticação e gerenciamento de tokens JWT via AWS Cognito")
 public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
@@ -57,8 +65,44 @@ public class AuthController {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    @Operation(
+        summary = "Autenticar usuário",
+        description = "Autentica um usuário no AWS Cognito e retorna tokens JWT (IdToken, AccessToken e RefreshToken)"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Autenticação bem-sucedida",
+            content = @Content(
+                mediaType = "application/json",
+                examples = @ExampleObject(value = """
+                    {
+                        "AuthenticationResult": {
+                            "AccessToken": "eyJraWQiOiJ...",
+                            "IdToken": "eyJraWQiOiJ...",
+                            "RefreshToken": "eyJjdHkiOiJ...",
+                            "ExpiresIn": 3600,
+                            "TokenType": "Bearer"
+                        }
+                    }
+                """)
+            )
+        ),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Credenciais inválidas",
+            content = @Content
+        ),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Erro interno do servidor",
+            content = @Content
+        )
+    })
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<?> login(
+            @Parameter(description = "Credenciais do usuário", required = true)
+            @RequestBody AuthRequest authRequest) {
         try {
             String secretHash = calculateSecretHash(authRequest.getUsername());
 
@@ -94,8 +138,37 @@ public class AuthController {
         }
     }
 
+    @Operation(
+        summary = "Validar token JWT",
+        description = "Valida um token JWT do Cognito e retorna as claims se válido"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Token válido",
+            content = @Content(
+                mediaType = "application/json",
+                examples = @ExampleObject(value = """
+                    {
+                        "valid": true,
+                        "claims": {
+                            "sub": "user-id",
+                            "email": "user@example.com",
+                            "cognito:username": "username"
+                        }
+                    }
+                """)
+            )
+        ),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Token inválido ou expirado",
+            content = @Content
+        )
+    })
     @PostMapping("/validate")
     public ResponseEntity<Map<String, Object>> validateToken(
+            @Parameter(description = "Token JWT no formato: Bearer {token}", required = true)
             @RequestHeader("Authorization") String authorizationHeader) {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String token = authorizationHeader.substring(7);
@@ -127,8 +200,44 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("valid", false, "message", "Token inválido"));
     }
 
+    @Operation(
+        summary = "Renovar token JWT",
+        description = "Renova o token de acesso usando o refresh token fornecido"
+    )
+    @ApiResponses(value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Token renovado com sucesso",
+            content = @Content(
+                mediaType = "application/json",
+                examples = @ExampleObject(value = """
+                    {
+                        "idToken": "eyJraWQiOiJ...",
+                        "accessToken": "eyJraWQiOiJ..."
+                    }
+                """)
+            )
+        ),
+        @ApiResponse(
+            responseCode = "400",
+            description = "Refresh token não fornecido",
+            content = @Content
+        ),
+        @ApiResponse(
+            responseCode = "401",
+            description = "Refresh token inválido ou expirado",
+            content = @Content
+        ),
+        @ApiResponse(
+            responseCode = "500",
+            description = "Erro ao processar renovação do token",
+            content = @Content
+        )
+    })
     @PostMapping("/refresh")
-    public ResponseEntity<?> refreshToken(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<?> refreshToken(
+            @Parameter(description = "Dados contendo o refreshToken e username", required = true)
+            @RequestBody Map<String, String> payload) {
         String refreshToken = payload.get("refreshToken");
         String username = payload.get("username");
 

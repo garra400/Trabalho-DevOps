@@ -2,7 +2,9 @@ package br.edu.utfpr.sofrimento.security;
 
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -12,11 +14,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -82,6 +86,9 @@ public class CognitoTokenValidationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
+        String requestURI = request.getRequestURI();
+        logger.info("🔍 Interceptor chamado para URI: {}", requestURI);
+        
         String authorizationHeader = request.getHeader("Authorization");
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
@@ -93,11 +100,50 @@ public class CognitoTokenValidationInterceptor implements HandlerInterceptor {
                 PublicKey publicKey = getPublicKey(keyId);
 
                 if (publicKey != null) {
-                    Algorithm algorithm = Algorithm.RSA256((RSAPublicKey) publicKey, null); // Usar a chave pública para
-                                                                                            // verificar
+                    Algorithm algorithm = Algorithm.RSA256((RSAPublicKey) publicKey, null);
                     algorithm.verify(jwt);
-                    request.setAttribute("cognitoUser", jwt.getClaims()); // Opcional: adicionar claims ao request
-                    return true; // Token válido
+                    
+                    // Adiciona as claims ao request para uso posterior
+                    request.setAttribute("cognitoUser", jwt.getClaims());
+                    request.setAttribute("cognitoJWT", jwt);
+                    
+                    // Verifica autorização por role se necessário
+                    if (handler instanceof HandlerMethod) {
+                        HandlerMethod handlerMethod = (HandlerMethod) handler;
+                        
+                        // Verifica anotação no método
+                        RequireRole methodAnnotation = handlerMethod.getMethodAnnotation(RequireRole.class);
+                        // Verifica anotação na classe
+                        RequireRole classAnnotation = handlerMethod.getBeanType().getAnnotation(RequireRole.class);
+                        
+                        RequireRole requireRole = methodAnnotation != null ? methodAnnotation : classAnnotation;
+                        
+                        if (requireRole != null) {
+                            String[] requiredRoles = requireRole.value();
+                            
+                            // Obtém os grupos do token Cognito
+                            Claim groupsClaim = jwt.getClaim("cognito:groups");
+                            List<String> userGroups = groupsClaim.isNull() ? 
+                                List.of() : groupsClaim.asList(String.class);
+                            
+                            // Verifica se o usuário tem pelo menos um dos roles necessários
+                            boolean hasRequiredRole = Arrays.stream(requiredRoles)
+                                .anyMatch(userGroups::contains);
+                            
+                            if (!hasRequiredRole) {
+                                logger.warn("Usuário {} não possui permissão necessária. Grupos: {}, Requeridos: {}", 
+                                    jwt.getSubject(), userGroups, Arrays.toString(requiredRoles));
+                                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                                response.setContentType("application/json");
+                                response.getWriter().write("{\"error\": \"Acesso negado. Permissão insuficiente.\"}");
+                                return false;
+                            }
+                            
+                            logger.info("Usuário {} autorizado com grupos: {}", jwt.getSubject(), userGroups);
+                        }
+                    }
+                    
+                    return true; // Token válido e autorizado
                 } else {
                     logger.error("Chave pública não encontrada para o token.");
                 }
@@ -110,6 +156,8 @@ public class CognitoTokenValidationInterceptor implements HandlerInterceptor {
         }
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType("application/json");
+        response.getWriter().write("{\"error\": \"Token inválido ou ausente.\"}");
         return false;
     }
 }

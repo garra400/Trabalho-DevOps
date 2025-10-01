@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.utfpr.sofrimento.dtos.PersonDTO;
 import br.edu.utfpr.sofrimento.models.Person;
+import br.edu.utfpr.sofrimento.security.RequireRole;
 import br.edu.utfpr.sofrimento.services.PersonService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 /**
  * Controlador REST para gerenciar operações relacionadas a persons.
@@ -21,6 +24,8 @@ import br.edu.utfpr.sofrimento.services.PersonService;
  */
 @RestController
 @RequestMapping("/person")
+@Tag(name = "Person", description = "API para gerenciamento de pessoas")
+@SecurityRequirement(name = "bearerAuth")
 public class PersonController {
 
     // Injeção do serviço de person
@@ -71,8 +76,10 @@ public class PersonController {
      * Endpoint para deletar uma person por ID.
      * Recebe o ID da person como parâmetro de consulta e deleta a person
      * correspondente.
+     * Requer que o usuário tenha o role "admin" no Cognito.
      */
     @DeleteMapping("/{id}")
+    @RequireRole({"admin"})
     public void delete(@PathVariable String id) {
         service.delete(id);
     }

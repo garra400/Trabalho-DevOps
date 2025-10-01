@@ -22,8 +22,26 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        System.out.println("🔧 Configurando interceptor com exclusões:");
+        System.out.println("   - /auth/**");
+        System.out.println("   - /swagger-ui.html");
+        System.out.println("   - /swagger-ui/**");
+        System.out.println("   - /v3/api-docs/**");
+        System.out.println("   - /v3/api-docs");
+        
         registry.addInterceptor(cognitoTokenValidationInterceptor)
                 .addPathPatterns("/**") // Aplica o interceptor aos seus endpoints protegidos
-                .excludePathPatterns("/auth/**", "/swagger/**"); // Exclui endpoints públicos ou de erro, se necessário
+                .excludePathPatterns(
+                    "/auth/**",              // Endpoints de autenticação
+                    "/swagger-ui.html",      // Página principal do Swagger UI
+                    "/swagger-ui/**",        // Recursos do Swagger UI
+                    "/v3/api-docs/**",       // Documentação OpenAPI JSON/YAML
+                    "/v3/api-docs",          // Documentação OpenAPI raiz
+                    "/swagger-resources/**", // Recursos do Swagger
+                    "/webjars/**",           // Dependências do Swagger UI (CSS, JS)
+                    "/configuration/**",     // Configuração do Swagger
+                    "/swagger-config",       // Configuração do Swagger
+                    "/api-docs/**"           // Docs alternativos
+                ); 
     }
 }

@@ -1,13 +1,15 @@
-@URL=http://localhost:8080/auth
+### Variáveis
+@baseURL = http://localhost:8080
+@token = SEU_TOKEN_AQUI
 
-@token=eyJraWQiOiJ4U3BMZ2tcLzRWc0tHRTVjeVB5R0JENEtsWDlvNjZ5SENWNmJDWjBDZ1hCMD0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIzMWZiNjU4MC1kMDgxLTcwYTUtMTA4MC0wYjY0ODEwMTQ0YWEiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0yLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMl80Z3NFVVNaa2siLCJjbGllbnRfaWQiOiIxbTdqbWJldmNjMHRhbmxtOHFsZmdmYzgzZCIsIm9yaWdpbl9qdGkiOiJlZTM3MjdlMC02Yzc1LTRhMTAtYjU0Yi02M2JhZjdlN2FmZDYiLCJldmVudF9pZCI6IjRkOWY3OWU1LWE1OTktNDMzOC1iYmQyLWI0NjIwNmEwYzg0MSIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE3NTg3MzIwOTcsImV4cCI6MTc1ODczNTY5NywiaWF0IjoxNzU4NzMyMDk3LCJqdGkiOiI0MTllYTQ3Ni03ZWMyLTQ1ZTktOWQ0Ny1iZTM4Yzk1MDM0Y2IiLCJ1c2VybmFtZSI6IjMxZmI2NTgwLWQwODEtNzBhNS0xMDgwLTBiNjQ4MTAxNDRhYSJ9.a9l34-1zOCMLCEPx9U7HSz1vJtJXGlhB50eJzPjKTWId8tL6eZ7b7zHy4b6kR23zPawGxYuzQHV27xlPHm0Nf7LtWWISwCVs19bi0gfhvp2Yx2i6UR2_3V631U0_YK3UKeQ9Uz2_ckEamUAqnNg2LPi5gtDdIQBCCVC96A77JVmf95JkN5hEBicXd-dEyUPOgaAmIZRPejOKVVeBd3Wfl_c9-8WaSm667Eb5x8j_gMbVCtgFPOUFOwKTvOLJ3ER4UVOaIUf0X_pnw1vHfr7FMqG0Kpp31LGLVDhYte6WXXy1O5la5tJvukwYP78IaF1KUtCNGK1GyGw5nejZB2rHCA
-### Validate
-POST {{URL}}/validate HTTP/1.1
-Authorization: Bearer {{token}}
+#############################################
+# AUTENTICAÇÃO
+#############################################
 
-
-### Auth with secret
-POST {{URL}}/login HTTP/1.1
+### 1. Login - Obter Token JWT
+# IMPORTANTE: Execute este primeiro para obter o token!
+# Depois copie o IdToken da resposta e cole na variável @token acima
+POST {{baseURL}}/auth/login
 Content-Type: application/json
 
 {
@@ -15,10 +17,79 @@ Content-Type: application/json
     "password": "senhateste"
 }
 
-### Refresh token
-POST {{URL}}auth/refresh HTTP/1.1
+### 2. Validar Token
+# Teste se o token está válido
+POST {{baseURL}}/auth/validate
+Authorization: Bearer {{token}}
+
+### 3. Renovar Token (Refresh)
+# Use quando o token expirar
+POST {{baseURL}}/auth/refresh
 Content-Type: application/json
 
 {
-    "refreshToken": "xxx"
+    "refreshToken": "cole-seu-refresh-token-aqui",
+    "username": "usuarioteste"
 }
+
+#############################################
+# DEVICE - Gerenciamento de Dispositivos
+#############################################
+
+### 4. Listar Todos os Dispositivos
+GET {{baseURL}}/device?page=0&size=10
+Authorization: Bearer {{token}}
+
+### 5. Buscar Dispositivo por ID
+# Substitua {deviceId} por um UUID real
+GET {{baseURL}}/device/uuid-do-dispositivo-aqui
+Authorization: Bearer {{token}}
+
+### 6. Criar Novo Dispositivo
+# Substitua {siloId} por um UUID de silo existente
+POST {{baseURL}}/device/uuid-do-silo-aqui
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "ip": "192.168.1.100",
+    "mac": "AA:BB:CC:DD:EE:FF"
+}
+
+### 7. Atualizar Dispositivo
+# Substitua {deviceId} por um UUID real
+PUT {{baseURL}}/device/uuid-do-dispositivo-aqui
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "ip": "192.168.1.200",
+    "mac": "11:22:33:44:55:66"
+}
+
+### 8. Deletar Dispositivo
+# Substitua {deviceId} por um UUID real
+DELETE {{baseURL}}/device/uuid-do-dispositivo-aqui
+Authorization: Bearer {{token}}
+
+#############################################
+# PERSON - Gerenciamento de Pessoas
+#############################################
+
+### 9. Listar Todas as Pessoas
+GET {{baseURL}}/person?page=0&size=10
+Authorization: Bearer {{token}}
+
+### 10. Criar Nova Pessoa
+POST {{baseURL}}/person
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "João Silva"
+}
+
+### 11. Deletar Pessoa (Requer Role ADMIN)
+# Substitua {id} por um UUID real
+DELETE {{baseURL}}/person/uuid-da-pessoa-aqui
+Authorization: Bearer {{token}}
