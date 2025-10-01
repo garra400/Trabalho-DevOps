@@ -112,6 +112,3 @@ O mapeamento inclui:
    ```
 4. **Abra um Pull Request** para `develop`
 
----
-
-Se quiser, posso também preparar **uma versão Kanban-friendly para GitHub** com *checklists* e tarefas já organizadas para aparecer no quadro automaticamente, para que você só copie e cole no *issue* principal. Isso já deixaria pronto para você começar a trabalhar no fluxo. Quer que eu faça essa versão também?
