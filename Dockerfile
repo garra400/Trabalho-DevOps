@@ -7,7 +7,7 @@ WORKDIR /app
 COPY sofrimento/pom.xml .
 
 # Copia o código-fonte
-COPY sofrimento ./src
+COPY sofrimento/src ./src
 RUN mvn clean package -DskipTests
 
 # Etapa 2: Imagem final (somente o jar)
