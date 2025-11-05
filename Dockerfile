@@ -2,9 +2,12 @@
 FROM maven:3.9.9-eclipse-temurin-17-alpine AS builder
 
 WORKDIR /app
-COPY pom.xml .
-COPY src ./src
 
+# Copia o pom.xml do local correto
+COPY sofrimento/src/pom.xml .
+
+# Copia o código-fonte
+COPY sofrimento/src ./src
 RUN mvn clean package -DskipTests
 
 # Etapa 2: Imagem final (somente o jar)
