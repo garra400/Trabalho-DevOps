@@ -15,8 +15,6 @@ FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
-RUN apk add --no-cache ca-certificates
-
 # Copia apenas o JAR gerado
 COPY --from=builder /app/target/*.jar app.jar
 
